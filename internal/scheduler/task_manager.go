@@ -6,6 +6,7 @@ import "sync"
 
 type TaskManager struct {
 	Wg sync.WaitGroup
+	Mt sync.Mutex
 }
 
 func NewTaskManager() *TaskManager {
