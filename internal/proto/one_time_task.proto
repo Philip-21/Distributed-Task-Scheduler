@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package proto;
+
+import "google/protobuf/any.proto";
+
+//protoc --go_out=paths=source_relative:. --go-grpc_out=paths=source_relative:. one_time_task.proto(generate grpc file)
+
+option go_package = "github.com/Philip-21/dts/internal/proto"; //golang module package
+
+// OneTimeTask message represents a one-time task to be scheduled.
+message OneTimeTask {
+    string task_id = 1;
+    google.protobuf.Any payload = 2;
+    string execute_at = 3; // ISO 8601 format (RFC3339)
+}
+
+// ScheduleRequest is the request message for scheduling a one-time task.
+message ScheduleRequest {
+    OneTimeTask task = 1;
+}
+
+// ScheduleResponse is the response message for scheduling a one-time task.
+message ScheduleResponse {
+    string status = 1;
+    string message = 2;
+    OneTimeTask task = 3; 
+}
+
+// Scheduler service definition.
+service Scheduler {
+    rpc ScheduleOneTimeTask (ScheduleRequest) returns (ScheduleResponse);
+}
